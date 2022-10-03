@@ -1,6 +1,7 @@
 #include "p3_student.h"
 
-
+#ifndef P3STUDENT
+#define P3STUDENT
 Student* create_student(int student_number, char* name, char* birth_year, char* tel, float degree) {
 	Student* new_student = NULL;
 	
@@ -30,7 +31,7 @@ void print_student(Student* student) {
 			student->name,
 			student->birth_year,
 			student->tel,
-			studetn->degree);
+			student->degree);
 }
 
 int validate_student_number(int student_number) {
@@ -78,9 +79,9 @@ int validate_tel(char* tel) {
 	}
 	if (sizeof(tel) != 11) {
 		printf("전화번호는 11자리 숫자로 입력해야 합니다.\n");
-		return0;
+		return 0;
 	}
-	for (int i = 0; i < 11; ++) {
+	for (int i = 0; i < 11; ++i) {
 		if (tel[i] < '0' || '9' < tel[i]) {
 			printf("전화번호는 숫자로 입력해야 합니다.\n");
 			return 0;
@@ -104,3 +105,4 @@ int validate_student_data(int student_number, char* name, char* birth_year, char
 		&& validate_tel(tel)
 		&& validate_degree(degree);
 }
+#endif

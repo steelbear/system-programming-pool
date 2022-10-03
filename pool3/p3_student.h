@@ -19,6 +19,7 @@ typedef struct _Student {
 
 
 Student* create_student(int, char*, char*, char*, float);
+void delete_student(Student*);
 void print_student(Student*);
 int validate_student_number(int);
 int validate_name(char*);
