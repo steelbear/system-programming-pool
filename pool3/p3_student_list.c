@@ -37,15 +37,15 @@ void push_node_to_list(StudentNode* node, StudentNode** list) {
 
 	if (*list == NULL) {
 		*list = node;
+		(*list)->next = NULL;
 	} else {
-		StudentNode* temp = *list;
+		node->next = *list;
 		*list = node;
-		node->next = temp;
 	}
 }
 
 void delete_node_by_number(int student_number, StudentNode** list) {
-	if (list == NULL) {
+	if (list == NULL || *list == NULL) {
 		printf("학생이 리스트에 존재하지 않습니다.\n");
 		return;
 	}
@@ -88,7 +88,7 @@ void update_student_tel_by_number(int student_number, char* tel, StudentNode* li
 		
 	for (StudentNode* node = list; node != NULL; node = node->next) {
 		if (node->student->student_number == student_number) {
-			node->student->tel = tel;
+			strcpy(node->student->tel, tel);
 			return;
 		}
 	}
@@ -131,18 +131,17 @@ void print_student_list(StudentNode* list) {
 }
 
 void delete_list(StudentNode** list) {
-	if (list == NULL) {
+	if (list == NULL || *list == NULL) {
 		printf("삭제할 리스트가 없습니다.\n");
 		return;
 	}
 
-	StudentNode* next_node = NULL;
-	StudentNode* node = *list;
+	StudentNode* node = NULL;
 
-	while (node != NULL) {
-		next_node = node->next;
+	while (*list != NULL) {
+		node = *list;
+		*list = node->next;
 		delete_student_node(node);
-		node = next_node;
 	}
 }
 #endif

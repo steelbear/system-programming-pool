@@ -8,6 +8,11 @@
 #define STDLIB
 #endif
 
+#ifndef STRING
+#include <string.h>
+#define STRING
+#endif
+
 #include "p3_student.h"
 
 
