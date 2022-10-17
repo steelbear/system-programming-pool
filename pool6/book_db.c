@@ -17,8 +17,8 @@ void close_db(void) {
 	fd = -1;
 }
 
-Node* db_read_book_list(void) {
-	Node* list = NULL;
+void db_read_book_list(Node* head) {
+	Node* list = head;
 	Node* node = NULL;
 	Book* book = (Book*)malloc(sizeof(Book));
 	size_t index = 0;
@@ -29,14 +29,14 @@ Node* db_read_book_list(void) {
 	while((ret = read(fd, (char*)book, sizeof(Book))) == sizeof(Book)) {
 		if (book->id - DB_BASE == index) {
 			node = create_node(book);
-			push_list(&list, len++, node);
+			node->next = list->next;
+			list->next = node;
+			list = list->next;
 			book = (Book*)malloc(sizeof(Book));
 		}
 		lseek(fd, (++index) * sizeof(Book), SEEK_SET); 
 	}
 	free(book);
-
-	return list;
 }
 
 void db_write_book(const Book* book) {

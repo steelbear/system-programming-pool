@@ -1,11 +1,6 @@
 #include "book_node.h"
 
 Node* create_node(Book* book) {
-	if (book == NULL) {
-		fprintf(stderr, "create_node: book이 NULL입니다.\n");
-		return NULL;
-	}
-
 	Node* node = (Node*)malloc(sizeof(Node));
 	node->book = book;
 	node->next = NULL;
@@ -77,6 +72,7 @@ void print_list(Node* head) {
 
 	if (head->next == NULL) {
 		printf("저장된 책 정보가 없습니다.\n");
+		return;
 	}
 
 	printf("%8s %24s %10s %8s %s\n", "식별자", "도서명", "저자명", "출판", "가격");
@@ -99,7 +95,7 @@ void push_node_sorted_by_title(Node* head, Node* node) {
 	dest_p->next = node;
 }
 
-void copy_and_sort_by_title(Node* dest, const Node* src) {
+void copy_and_sort_by_title(Node* dest, Node* src) {
 	Node* src_p = src;
 	Node* dest_p;
 	Node* copied;
