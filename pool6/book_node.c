@@ -8,11 +8,6 @@ Node* create_node(Book* book) {
 	return node;
 }
 
-void remove_node(Node* node) {
-	remove_book(node->book);
-	free(node);
-}
-
 Node* pop_node(Node* head, const int id) {
 	Node* node = head;
 	Node* poped;
@@ -89,18 +84,6 @@ void copy_and_sort_by_title(Node* dest, Node* src) {
 	}
 }
 
-void remove_list(Node* head) {
-	Node* node = head->next;
-	Node* removed;
-
-	while (node != NULL) {
-		removed = node;
-		node = node->next;
-		remove_node(removed);
-	}
-	head->next = NULL;
-}
-
 int search_book_by_title(Node* head, char keyword[TITLE_MAX]) {
 	Node* node = head;
 	int count = 0;
@@ -112,7 +95,7 @@ int search_book_by_title(Node* head, char keyword[TITLE_MAX]) {
 
 	while (node->next != NULL) {
 		node = node->next;
-		if (strstr(node->book->title, keyword) != NULL) {
+		if (substr_book(node->book, keyword)) {
 			print_book(node->book);
 			++count;
 		}

@@ -1,7 +1,6 @@
 #include "main.h"
 
 int main(void) {
-	int input = -1;
 	Node* head_id = create_node(NULL);
 	Node* head_title = create_node(NULL);
 
@@ -9,18 +8,44 @@ int main(void) {
 	db_read_book_list(head_id);
 	copy_and_sort_by_title(head_title, head_id);
 
+	repl(head_id, head_title);
+	clearning(head_id, head_title);
+
+	return 0;
+}
+
+void repl(Node* head_id, Node* head_title) {
+	int input = -1;
 	while (input != 0) {
 		print_prompt();
 		scanf("%d", &input);
 		__fpurge(stdin);
 		run(input, head_id, head_title);
 	}
+}
 
-	return 0;
+void clearning(Node* head_id, Node* head_title) {
+	Node* temp;
+	while (head_id->next != NULL) {
+		temp = head_id->next;
+		head_id->next = temp->next;
+		free(temp->book);
+		free(temp);
+	}
+	free(head_id);
+
+	while (head_title->next != NULL) {
+		temp = head_title->next;
+		head_title->next = temp->next;
+		free(temp);
+	}
+	free(head_title);
+
+	close_db();
 }
 
 void print_prompt(void) {
-	printf("Book Management\n 1. List up All Book(Sort by 식별자)\n 2. List up All Book(Sort by 도서명)\n 3. Add New Book\n 4. Update Book\n 5. Remove a Book\n 6. Search Book Information By Title(minimum 2char)\n 0. Quit\n입력: ");
+	printf("\nBook Management\n 1. List up All Book(Sort by 식별자)\n 2. List up All Book(Sort by 도서명)\n 3. Add New Book\n 4. Update Book\n 5. Remove a Book\n 6. Search Book Information By Title(minimum 2char)\n 0. Quit\n입력: ");
 }
 
 void run(const int input, Node* head_id, Node* head_title) {
@@ -167,12 +192,12 @@ Book* get_book_info_input(int id) {
 	do {
 		printf("항목에 맞게 입력하세요.\n");
 		printf("%s\t%s\t%s\t%s\n", "도서명", "저자명", "출판일(YYYYMMdd)", "가격");
-		scanf("%24s %20s %8s %d", title, author, published, &price);
+		scanf("%50s %20s %8s %d", title, author, published, &price);
 		__fpurge(stdin);
 	} while(price <= 0);
 
 	printf("해당 책의 추천할만한 이유를 적어주세요(100자 이내):\n");
-	scanf("%100s", recommand);
+	fgets(recommand, RECOM_MAX, stdin);
 	__fpurge(stdin);
 
 	return create_book(id, title, author, published, recommand, price);

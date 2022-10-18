@@ -12,4 +12,4 @@ void db_read_book_list(Node* head);
 void db_write_book(const Book* book);
 int db_check_book_by_id(const int id);
 Book* db_get_book_by_id(const int id);
-int db_remove_book_by_id(const int id);
+void db_remove_book_by_id(const int id);

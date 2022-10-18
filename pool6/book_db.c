@@ -76,9 +76,9 @@ Book* db_get_book_by_id(const int id) {
 	}
 }
 
-int db_remove_book_by_id(const int id) {
+void db_remove_book_by_id(const int id) {
 	int index = id - DB_BASE;
 	lseek(fd, index * sizeof(Book), SEEK_SET);
 	write(fd, (char*)&BOOK_EMPTY, sizeof(Book)); 
-	return 1;
+	return;
 }

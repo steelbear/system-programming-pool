@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define TITLE_MAX 25 
+#define TITLE_MAX 51
 #define AUTHOR_MAX 21
 #define PUBLISH_MAX 9
 #define RECOM_MAX 101

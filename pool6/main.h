@@ -4,7 +4,8 @@
 
 #include "book_db.h"
 
-
+void repl(Node* head_id, Node* head_title);
+void clearning(Node* head_id, Node* head_title);
 void print_prompt(void);
 void run(const int input, Node* head_id, Node* head_title);
 void list_all(Node* head);

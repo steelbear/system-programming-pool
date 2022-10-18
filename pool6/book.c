@@ -6,7 +6,7 @@ void print_book(const Book* book) {
 		return;
 	}
 
-	printf(" 식별자: %d\n 제목: %s\n 저자: %s\n 출판년월일: %s\n 가격: %d원\n 추천 이유: %s\n",
+	printf("\n 식별자: %d\n 제목: %s\n 저자: %s\n 출판년월일: %s\n 가격: %d원\n 추천 이유: %s\n",
 			book->id,
 			book->title,
 			book->author,
@@ -66,5 +66,5 @@ int substr_book(const Book* book, const char* keyword) {
 		return 0;
 	}
 
-	return (int)(*strstr(book->title, keyword));
+	return strstr(book->title, keyword) != NULL;
 }
