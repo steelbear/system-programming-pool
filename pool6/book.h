@@ -3,8 +3,8 @@
 #include <string.h>
 
 #define TITLE_MAX 25 
-#define AUTHOR_MAX 11
-#define PUBLISH_MAX 8
+#define AUTHOR_MAX 21
+#define PUBLISH_MAX 9
 #define RECOM_MAX 101
 
 

@@ -25,12 +25,11 @@ void db_read_book_list(Node* head) {
 	int len = 0;
 	int ret;
 
-	lseek(fd, sizeof(Book), SEEK_SET);
-	while((ret = read(fd, (char*)book, sizeof(Book))) == sizeof(Book)) {
-		if (book->id - DB_BASE == index) {
+	lseek(fd, 0L, SEEK_SET);
+	while((ret = read(fd, (char*)book, sizeof(Book))) != 0) {
+		if ((book->id - DB_BASE) == index) {
 			node = create_node(book);
-			node->next = list->next;
-			list->next = node;
+			push_node_sorted_by_id(list, node);
 			list = list->next;
 			book = (Book*)malloc(sizeof(Book));
 		}
@@ -48,6 +47,7 @@ void db_write_book(const Book* book) {
 	int index = book->id - DB_BASE;
 	
 	lseek(fd, index * sizeof(Book), SEEK_SET);
+	write(fd, (char*)book, sizeof(Book));
 }
 
 int db_check_book_by_id(const int id) {
@@ -59,6 +59,21 @@ int db_check_book_by_id(const int id) {
 	ret = read(fd, &book_id, sizeof(int));
 	
 	return ret == sizeof(int) && book_id == id;
+}
+
+Book* db_get_book_by_id(const int id) {
+	int index = id - DB_BASE;
+	int ret;
+	Book* book = (Book*)malloc(sizeof(Book));
+
+	lseek(fd, index * sizeof(Book), SEEK_SET);
+	ret = read(fd, (char*)book, sizeof(Book));
+	
+	if (ret == 0) {
+		return NULL;
+	} else {
+		return book;
+	}
 }
 
 int db_remove_book_by_id(const int id) {

@@ -13,55 +13,26 @@ void remove_node(Node* node) {
 	free(node);
 }
 
-void push_list(Node* head, const int index, Node* node) {
-	Node* cur = head;
-	int i = 0;
+Node* pop_node(Node* head, const int id) {
+	Node* node = head;
+	Node* poped;
 	
 	if (head == NULL) {
-		fprintf(stderr, "pop_list: 리스트가 NULL입니다.\n");
-		return;
-	}
-
-	while (cur->next != NULL) {
-		if (i == index) break;
-		cur = cur->next;
-		++i;
-	}
-
-	if (i < index) {
-		fprintf(stderr, "push_list: %d 길이의 리스트에서 %d에 접근하려 합니다.\n", index, i);
-		return;
-	}
-
-	node->next = cur->next;
-	cur->next = node;
-}
-
-Node* pop_list(Node* head, const int index) {
-	Node* cur = head;
-	Node* poped = NULL;
-	int i = 0;
-
-	if (head == NULL) {
-		fprintf(stderr, "pop_list: 리스트가 NULL입니다.\n");
+		fprintf(stderr, "get_node_from_list: head가 NULL 입니다.\n");
 		return NULL;
 	}
 
-	while (cur->next != NULL) {
-		if (i == index) break;
-		cur = cur->next;
-		++i;
+	while (node->next != NULL) {
+		if (node->next->book->id == id) {
+			poped = node->next;
+			node->next = poped->next;
+			poped->next = NULL;
+			return poped;
+		}
+		node = node->next;
 	}
 
-	if (i < index) {
-		fprintf(stderr, "pop_list: %d 길이의 리스트에서 %d에 접근하려 합니다.\n", index, i);
-		return NULL;
-	}
-
-	poped = cur->next;
-	cur->next = cur->next->next;
-	poped->next = NULL;
-	return poped;
+	return NULL;
 }
 
 void print_list(Node* head) {
@@ -75,11 +46,22 @@ void print_list(Node* head) {
 		return;
 	}
 
-	printf("%8s %24s %10s %8s %s\n", "식별자", "도서명", "저자명", "출판", "가격");
-
 	for (Node* node = head->next; node != NULL; node = node->next) {
 		print_book(node->book);
 	}
+}
+
+void push_node_sorted_by_id(Node* head, Node* node) {
+	Node* dest_p = head;
+	while (dest_p->next != NULL) {
+		if (compare_book_by_id(node->book, dest_p->next->book) < 0) {
+			break;
+		}
+		dest_p = dest_p->next;
+	}
+
+	node->next = dest_p->next;
+	dest_p->next = node;
 }
 
 void push_node_sorted_by_title(Node* head, Node* node) {
@@ -117,4 +99,24 @@ void remove_list(Node* head) {
 		remove_node(removed);
 	}
 	head->next = NULL;
+}
+
+int search_book_by_title(Node* head, char keyword[TITLE_MAX]) {
+	Node* node = head;
+	int count = 0;
+
+	if (keyword == NULL || head == NULL) {
+		fprintf(stderr, "search_book_by_title: keyword 또는 head가 NULL입니다.\n");
+		return 0;
+	}
+
+	while (node->next != NULL) {
+		node = node->next;
+		if (strstr(node->book->title, keyword) != NULL) {
+			print_book(node->book);
+			++count;
+		}
+	}
+
+	return count;
 }

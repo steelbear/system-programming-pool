@@ -6,7 +6,7 @@ void print_book(const Book* book) {
 		return;
 	}
 
-	printf("%8d %24s %10s %8s %d원\n%s\n",
+	printf(" 식별자: %d\n 제목: %s\n 저자: %s\n 출판년월일: %s\n 가격: %d원\n 추천 이유: %s\n",
 			book->id,
 			book->title,
 			book->author,
